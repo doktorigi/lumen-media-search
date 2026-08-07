@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d0e" />
+    <meta
+      name="description"
+      content="Lumen is private, local semantic search for the photos and videos on your computer."
+    />
+    <title>Lumen — Find the moment</title>
+    <link rel="stylesheet" href="/static/app.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#results">Skip to results</a>
+
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Lumen home">
+          <span class="brand-mark" aria-hidden="true">
+            <span class="brand-core"></span>
+          </span>
+          <span class="brand-copy">
+            <strong>Lumen</strong>
+            <span>local media search</span>
+          </span>
+        </a>
+
+        <div class="topbar-actions">
+          <div class="device-chip is-checking" id="deviceChip" role="status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="device-label" id="deviceLabel">Checking engine</span>
+          </div>
+          <button
+            class="button button-secondary library-button"
+            id="toggleLibraryButton"
+            type="button"
+            aria-expanded="false"
+            aria-controls="libraryPanel"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M3.75 6.75a2 2 0 0 1 2-2h3.1l1.5 1.75h7.9a2 2 0 0 1 2 2v8.75a2 2 0 0 1-2 2H5.75a2 2 0 0 1-2-2V6.75Z" />
+            </svg>
+            <span>Library</span>
+            <span class="library-count" id="libraryCount">—</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="heroTitle">
+          <div class="hero-copy">
+            <p class="eyebrow"><span></span>Your library, understood</p>
+            <h1 id="heroTitle">Find the <em>moment,</em><br />not the filename.</h1>
+            <p class="hero-description">
+              Describe what you remember. Lumen searches the meaning inside your photos and
+              videos—privately, on this computer.
+            </p>
+          </div>
+
+          <div class="search-zone">
+            <form class="search-form" id="searchForm" role="search">
+              <label class="sr-only" for="searchInput">Describe a photo or video</label>
+              <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24">
+                <circle cx="10.8" cy="10.8" r="6.3" />
+                <path d="m15.4 15.4 4.35 4.35" />
+              </svg>
+              <input
+                id="searchInput"
+                type="search"
+                autocomplete="off"
+                spellcheck="true"
+                placeholder="Try “a dog running through snow”"
+              />
+              <kbd class="search-shortcut" aria-hidden="true"><span>Ctrl</span> K</kbd>
+              <button class="search-submit" type="submit" aria-label="Search library">
+                <span>Search</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M5 12h14M14 7l5 5-5 5" />
+                </svg>
+              </button>
+            </form>
+
+            <div class="search-options">
+              <div class="filter-group" id="kindFilters" role="group" aria-label="Media type">
+                <button class="filter-pill is-active" type="button" data-kind="all" aria-pressed="true">
+                  All moments
+                </button>
+                <button class="filter-pill" type="button" data-kind="image" aria-pressed="false">
+                  Photos
+                </button>
+                <button class="filter-pill" type="button" data-kind="video" aria-pressed="false">
+                  Videos
+                </button>
+              </div>
+              <p class="privacy-note">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M7.25 10V7.75a4.75 4.75 0 0 1 9.5 0V10M5.5 10h13v10h-13z" />
+                </svg>
+                Your media never leaves this device
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="library-panel" id="libraryPanel" aria-labelledby="libraryTitle" hidden>
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Media library</p>
+              <h2 id="libraryTitle">Give Lumen somewhere to look</h2>
+              <p>Add one or more folders. Existing files stay exactly where they are.</p>
+            </div>
+            <button class="icon-button" id="closeLibraryButton" type="button" aria-label="Close library panel">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m6 6 12 12M18 6 6 18" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="library-layout">
+            <form class="folder-form" id="indexForm">
+              <label for="folderPaths">Folder paths <span>one per line</span></label>
+              <div class="path-field-wrap">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M3.75 6.75a2 2 0 0 1 2-2h3.1l1.5 1.75h7.9a2 2 0 0 1 2 2v8.75a2 2 0 0 1-2 2H5.75a2 2 0 0 1-2-2V6.75Z" />
+                </svg>
+                <textarea
+                  id="folderPaths"
+                  rows="3"
+                  placeholder="C:\Users\You\Pictures&#10;D:\Family videos"
+                  required
+                ></textarea>
+              </div>
+              <div class="folder-form-footer">
+                <p>Photos and video frames are understood locally by the active engine.</p>
+                <button class="button button-primary" id="indexButton" type="submit">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M12 4v16M4 12h16" />
+                  </svg>
+                  <span>Index folders</span>
+                </button>
+              </div>
+            </form>
+
+            <div class="library-stats" aria-label="Library statistics">
+              <div class="stat-card stat-card-primary">
+                <span>Searchable moments</span>
+                <strong id="segmentCount">—</strong>
+                <small id="assetSummary">Waiting for library</small>
+              </div>
+              <div class="stat-pair">
+                <div class="stat-card">
+                  <span>Photos</span>
+                  <strong id="photoCount">—</strong>
+                </div>
+                <div class="stat-card">
+                  <span>Videos</span>
+                  <strong id="videoCount">—</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="job-panel" id="jobPanel" aria-live="polite" hidden>
+            <div class="job-topline">
+              <div>
+                <span class="job-spinner" aria-hidden="true"></span>
+                <strong id="jobTitle">Indexing your library</strong>
+              </div>
+              <span id="jobProgressLabel">0%</span>
+            </div>
+            <div
+              class="progress-track"
+              id="jobProgressTrack"
+              role="progressbar"
+              aria-label="Indexing progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <span id="jobProgressBar"></span>
+            </div>
+            <div class="job-details">
+              <span id="jobCurrent">Preparing engine…</span>
+              <span id="jobCounts"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="results-section" id="results" aria-labelledby="resultsTitle" tabindex="-1">
+          <div class="results-heading">
+            <div>
+              <p class="section-kicker" id="resultsKicker">Explore your library</p>
+              <h2 id="resultsTitle">What do you want to find?</h2>
+            </div>
+            <p class="result-meta" id="resultMeta" aria-live="polite"></p>
+          </div>
+
+          <div class="state-card welcome-state" id="welcomeState">
+            <div class="memory-orbit" aria-hidden="true">
+              <span class="orbit orbit-one"></span>
+              <span class="orbit orbit-two"></span>
+              <svg viewBox="0 0 32 32">
+                <path d="M5.5 8.5a3 3 0 0 1 3-3h15a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3z" />
+                <circle cx="11.5" cy="11.5" r="2.5" />
+                <path d="m7.5 23 5.4-5.9 3.7 3.4 3.5-4 4.4 6.5" />
+              </svg>
+            </div>
+            <div class="state-copy">
+              <h3>Search the way you remember</h3>
+              <p>Scenes, colors, places, moods—even a half-remembered detail can be enough.</p>
+              <div class="prompt-list" aria-label="Example searches">
+                <button type="button" data-prompt="sunset over the water">sunset over the water</button>
+                <button type="button" data-prompt="birthday cake with candles">birthday cake with candles</button>
+                <button type="button" data-prompt="a quiet street at night">a quiet street at night</button>
+              </div>
+            </div>
+            <button class="button button-secondary welcome-library-button" id="welcomeLibraryButton" type="button">
+              Add a folder
+            </button>
+          </div>
+
+          <div class="result-grid" id="resultGrid" aria-label="Search results" hidden></div>
+
+          <div class="loading-grid" id="loadingGrid" aria-label="Searching" aria-busy="true" hidden>
+            <div class="skeleton-card"><span></span><i></i><i></i></div>
+            <div class="skeleton-card"><span></span><i></i><i></i></div>
+            <div class="skeleton-card"><span></span><i></i><i></i></div>
+            <div class="skeleton-card"><span></span><i></i><i></i></div>
+            <div class="skeleton-card"><span></span><i></i><i></i></div>
+            <div class="skeleton-card"><span></span><i></i><i></i></div>
+          </div>
+
+          <div class="state-card empty-state" id="emptyState" hidden>
+            <div class="state-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="10.5" cy="10.5" r="6" />
+                <path d="m15 15 4.25 4.25M8.5 8.5l4 4m0-4-4 4" />
+              </svg>
+            </div>
+            <div class="state-copy">
+              <h3>No moments found</h3>
+              <p id="emptyMessage">Try a broader description or search a different media type.</p>
+            </div>
+          </div>
+
+          <div class="state-card error-state" id="errorState" hidden>
+            <div class="state-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3.75 21 20.25H3L12 3.75Z" />
+                <path d="M12 9v5m0 3v.1" />
+              </svg>
+            </div>
+            <div class="state-copy">
+              <h3 id="errorTitle">Search hit a snag</h3>
+              <p id="errorMessage">Lumen couldn’t reach its local search engine.</p>
+            </div>
+            <button class="button button-secondary" id="retryButton" type="button">Try again</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="footer-brand">
+          <span class="mini-mark" aria-hidden="true"></span>
+          <span>Lumen</span>
+        </div>
+        <p>Private by design · Indexed and searched locally</p>
+        <p class="footer-engine" id="footerEngine">Engine status unavailable</p>
+      </footer>
+    </div>
+
+    <dialog class="viewer" id="mediaViewer" aria-labelledby="viewerTitle">
+      <div class="viewer-shell">
+        <div class="viewer-stage" id="viewerStage"></div>
+        <aside class="viewer-details">
+          <form method="dialog">
+            <button class="icon-button viewer-close" value="close" aria-label="Close preview">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m6 6 12 12M18 6 6 18" />
+              </svg>
+            </button>
+          </form>
+          <div class="viewer-copy">
+            <p class="section-kicker" id="viewerKind">Photo</p>
+            <h2 id="viewerTitle">Media preview</h2>
+            <p class="viewer-path" id="viewerPath"></p>
+            <dl class="viewer-meta" id="viewerMeta"></dl>
+          </div>
+          <div class="viewer-actions">
+            <button class="button button-primary" id="openMediaButton" type="button">
+              Open file
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M5 12h14M14 7l5 5-5 5" />
+              </svg>
+            </button>
+            <button class="button button-secondary" id="revealMediaButton" type="button">Show in folder</button>
+          </div>
+        </aside>
+      </div>
+    </dialog>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
