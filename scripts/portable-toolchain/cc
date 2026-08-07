@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+: "${LUMEN_ZIG_BIN:?LUMEN_ZIG_BIN must point to the pinned Zig executable}"
+exec "$LUMEN_ZIG_BIN" cc "$@"
